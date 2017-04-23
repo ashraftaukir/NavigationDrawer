@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
     GridViewAdapter gridViewAdapter;
     int pageNumber;
     private boolean itemsetupChecker = false;
-    private ArrayList<MyDataModel> informationArraylist;
     private int currentPage = PAGE_START;
     private SwipeRefreshLayout swipe_refresh_layout;
     private int TOTAL_PAGES = 20;
@@ -47,7 +45,6 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         init();
         initListener();
         ApiCall(currentPage);
-
         gridviewscrolling();
 
     }
@@ -57,7 +54,6 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         gridview.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
             @Override
             protected void loadMoreItems() {
-                Log.d(TAG, "loadMoreItems: "+"addOnScrollListener");
                 isLoading = true;
                 currentPage += 1;
                 if (currentPage <= TOTAL_PAGES) {
@@ -106,7 +102,7 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
     }
 
     private void init() {
-        informationArraylist = new ArrayList<>();
+        ArrayList<MyDataModel> informationArraylist = new ArrayList<>();
         swipe_refresh_layout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         gridview = (RecyclerView) findViewById(R.id.gridview);
         gridLayoutManager = new GridLayoutManager(this, 3);
@@ -179,11 +175,13 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-            gridview.setLayoutManager(new GridLayoutManager(this,4));
-        }
-        if(newConfig.orientation==Configuration.ORIENTATION_PORTRAIT){
-            gridview.setLayoutManager(new GridLayoutManager(this,3));
+            gridLayoutManager = new GridLayoutManager(this, 4);
+            gridview.setLayoutManager(gridLayoutManager);
+            gridviewscrolling();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            gridLayoutManager = new GridLayoutManager(this, 3);
+            gridview.setLayoutManager(gridLayoutManager);
+            gridviewscrolling();
 
         }
 

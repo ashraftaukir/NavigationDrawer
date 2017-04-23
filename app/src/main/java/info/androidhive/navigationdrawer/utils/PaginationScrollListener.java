@@ -3,6 +3,7 @@ package info.androidhive.navigationdrawer.utils;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 
 public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
@@ -11,6 +12,8 @@ public abstract class PaginationScrollListener extends RecyclerView.OnScrollList
 
 
     public PaginationScrollListener(GridLayoutManager layoutManager) {
+        Log.d("layout", "loadMoreItems: "+"layout");
+
         this.layoutManager = layoutManager;
     }
 

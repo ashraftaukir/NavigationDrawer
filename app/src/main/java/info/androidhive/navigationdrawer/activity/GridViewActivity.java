@@ -1,5 +1,6 @@
 package info.androidhive.navigationdrawer.activity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,7 +24,7 @@ import info.androidhive.navigationdrawer.utils.InternetConnection;
 import info.androidhive.navigationdrawer.utils.PaginationScrollListener;
 
 
-public class GridViewActivity extends AppCompatActivity implements GetDataCallBack, GetDataNextPageCallBack, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class GridViewActivity extends AppCompatActivity implements GetDataCallBack, GetDataNextPageCallBack, SwipeRefreshLayout.OnRefreshListener {
 
     private static final int PAGE_START = 1;
     private static final String TAG = "ACD";
@@ -47,9 +48,16 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         initListener();
         ApiCall(currentPage);
 
+        scrollListener();
+
+    }
+
+    private void scrollListener() {
+
         gridview.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
             @Override
             protected void loadMoreItems() {
+                Log.d(TAG, "loadMoreItems: "+"addOnScrollListener");
                 isLoading = true;
                 currentPage += 1;
                 if (currentPage <= TOTAL_PAGES) {
@@ -72,8 +80,8 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
                 return isLoading;
             }
         });
-
     }
+
 
     private void initListener() {
         swipe_refresh_layout.setOnRefreshListener(this);
@@ -168,7 +176,18 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
     }
 
     @Override
-    public void onClick(View view) {
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+            gridview.setLayoutManager(new GridLayoutManager(this,4));
+            //scrollListener();
+        }
+        if(newConfig.orientation==Configuration.ORIENTATION_PORTRAIT){
+            gridview.setLayoutManager(new GridLayoutManager(this,3));
+            //scrollListener();
+
+        }
 
     }
 }

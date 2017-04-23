@@ -82,6 +82,19 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         txtWebsite = (TextView) navHeader.findViewById(R.id.website);
         linearLayout = (LinearLayout) findViewById(R.id.linearlayout);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        fragmentTransition();
+
+        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
+        loadNavHeader();
+        setUpNavigationView();
+//        if (savedInstanceState == null) {
+//            navItemIndex = 0;
+//            CURRENT_TAG = TAG_HOME;
+//            loadHomeFragment();
+//        }
+    }
+
+    private void fragmentTransition() {
         topFragment = new TopFragment();
         bottomFragment = new BottomFragment();
         FragmentManager manager = getSupportFragmentManager();
@@ -89,21 +102,13 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         transaction.add(R.id.firstfragment, topFragment, "Frag_Top_tag");
         transaction.add(R.id.secondfragment, bottomFragment, "Frag_Bottom_tag");
         transaction.commit();
-        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
-        loadNavHeader();
-        setUpNavigationView();
-        if (savedInstanceState == null) {
-            navItemIndex = 0;
-            CURRENT_TAG = TAG_HOME;
-            loadHomeFragment();
-        }
-    }
 
+    }
 
 
     private void loadNavHeader() {
         txtName.setText("Ashraf Taukir");
-        txtWebsite.setText("www.taukir.info");
+        txtWebsite.setText("www.taukir.com");
         navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
     }
 
@@ -195,14 +200,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
                         navItemIndex = 4;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
-                    case R.id.nav_about_us:
-                        startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
-                        drawer.closeDrawers();
-                        return true;
-                    case R.id.nav_privacy_policy:
-                        startActivity(new Intent(MainActivity.this, PrivacyPolicyActivity.class));
-                        drawer.closeDrawers();
-                        return true;
+
                     default:
                         navItemIndex = 0;
                 }
@@ -240,20 +238,6 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawers();
-            return;
-        }
-
-        if (shouldLoadHomeFragOnBackPress) {
-
-            if (navItemIndex != 0) {
-                navItemIndex = 0;
-                CURRENT_TAG = TAG_HOME;
-                loadHomeFragment();
-                return;
-            }
-        }
 
         super.onBackPressed();
     }
@@ -274,15 +258,11 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
-            Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
+        if (id == R.id.action_gridview) {
+
+            Intent intent = new Intent(this, GridViewActivity.class);
+            this.startActivity(intent);
             return true;
-        }
-        if (id == R.id.action_mark_all_read) {
-            Toast.makeText(getApplicationContext(), "All notifications marked as read!", Toast.LENGTH_LONG).show();
-        }
-        if (id == R.id.action_clear_notifications) {
-            Toast.makeText(getApplicationContext(), "Clear all notifications!", Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);

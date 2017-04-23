@@ -3,6 +3,8 @@
     package="info.androidhive.navigationdrawer">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -20,12 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.AboutUsActivity"
-            android:label="@string/activity_title_about_us" />
-        <activity
-            android:name=".activity.PrivacyPolicyActivity"
-            android:label="@string/activity_title_privacy_policy" />
+        <activity android:name=".activity.GridViewActivity"/>
+
     </application>
 
 </manifest>

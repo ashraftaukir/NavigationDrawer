@@ -4,13 +4,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,13 +16,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import info.androidhive.navigationdrawer.R;
 import info.androidhive.navigationdrawer.fragment.BottomFragment;
@@ -36,34 +29,30 @@ import info.androidhive.navigationdrawer.fragment.PhotosFragment;
 import info.androidhive.navigationdrawer.fragment.SettingsFragment;
 import info.androidhive.navigationdrawer.fragment.TopFragment;
 import info.androidhive.navigationdrawer.myinterface.DataCallback;
-import info.androidhive.navigationdrawer.other.CircleTransform;
 
 public class MainActivity extends AppCompatActivity implements DataCallback {
 
-    private NavigationView navigationView;
-    private DrawerLayout drawer;
-    private View navHeader;
-    private TextView txtName, txtWebsite;
-    private Toolbar toolbar;
-
-
-    public static int navItemIndex = 0;
-
+    private static final String TAG = "abc";
     private static final String TAG_HOME = "home";
     private static final String TAG_PHOTOS = "photos";
     private static final String TAG_MOVIES = "movies";
     private static final String TAG_NOTIFICATIONS = "notifications";
     private static final String TAG_SETTINGS = "settings";
+    public static int navItemIndex = 0;
     public static String CURRENT_TAG = TAG_HOME;
+    TopFragment topFragment;
+    BottomFragment bottomFragment;
+    FragmentTransaction transaction;
+    FrameLayout frame, firstfragment, secondfragment;
+    private NavigationView navigationView;
+    private DrawerLayout drawer;
+    private View navHeader;
+    private TextView txtName, txtWebsite;
+    private Toolbar toolbar;
     private String[] activityTitles;
     private LinearLayout linearLayout;
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
-
-
-    TopFragment topFragment;
-    BottomFragment bottomFragment;
-    FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +60,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        mHandler = new Handler();
-
+     //   mHandler = new Handler();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         // Navigation view header
@@ -82,11 +69,20 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         txtWebsite = (TextView) navHeader.findViewById(R.id.website);
         linearLayout = (LinearLayout) findViewById(R.id.linearlayout);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        frame = (FrameLayout) findViewById(R.id.frame);
+        firstfragment = (FrameLayout) findViewById(R.id.firstfragment);
+        secondfragment = (FrameLayout) findViewById(R.id.secondfragment);
+
+
+        frame.setVisibility(View.GONE);
         fragmentTransition();
 
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
         loadNavHeader();
         setUpNavigationView();
+
+
+        //no need to change this code
 //        if (savedInstanceState == null) {
 //            navItemIndex = 0;
 //            CURRENT_TAG = TAG_HOME;
@@ -109,7 +105,8 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
     private void loadNavHeader() {
         txtName.setText("Ashraf Taukir");
         txtWebsite.setText("www.taukir.com");
-        navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
+        //
+        // navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
     }
 
 
@@ -117,30 +114,27 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
 
         selectNavMenu();
 
+
         setToolbarTitle();
 
         if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
             drawer.closeDrawers();
-
-
             return;
         }
 
+        firstfragment.setVisibility(View.GONE);
+        secondfragment.setVisibility(View.GONE);
+        frame.setVisibility(View.VISIBLE);
 
-        Runnable mPendingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                Fragment fragment = getHomeFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-                        android.R.anim.fade_out);
-                fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
-                fragmentTransaction.commitAllowingStateLoss();
-            }
-        };
+        Fragment fragment = getHomeFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
+        fragmentTransaction.commitAllowingStateLoss();
 
 
-        mHandler.post(mPendingRunnable);
+        // mHandler.post(mPendingRunnable);
 
         drawer.closeDrawers();
 
@@ -269,18 +263,19 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
     }
 
 
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         int orientation = newConfig.orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
-            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.d(TAG, "onConfigurationChanged: ");
+
+            // linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
         } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            //  linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         } else {
             Log.d("other", "onConfigurationChanged: " + "other");

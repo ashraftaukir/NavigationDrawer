@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-     //   mHandler = new Handler();
+        //   mHandler = new Handler();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         // Navigation view header
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         secondfragment = (FrameLayout) findViewById(R.id.secondfragment);
 
 
-        frame.setVisibility(View.GONE);
+     //   frame.setVisibility(View.GONE);
         fragmentTransition();
 
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
@@ -113,15 +113,11 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
     private void loadHomeFragment() {
 
         selectNavMenu();
-
-
         setToolbarTitle();
-
         if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
             drawer.closeDrawers();
             return;
         }
-
         firstfragment.setVisibility(View.GONE);
         secondfragment.setVisibility(View.GONE);
         frame.setVisibility(View.VISIBLE);
@@ -132,12 +128,8 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
                 android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
         fragmentTransaction.commitAllowingStateLoss();
-
-
         // mHandler.post(mPendingRunnable);
-
         drawer.closeDrawers();
-
         invalidateOptionsMenu();
     }
 
@@ -205,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
                     menuItem.setChecked(true);
                 }
                 menuItem.setChecked(true);
-
                 loadHomeFragment();
 
                 return true;

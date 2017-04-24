@@ -105,7 +105,13 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         ArrayList<MyDataModel> informationArraylist = new ArrayList<>();
         swipe_refresh_layout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         gridview = (RecyclerView) findViewById(R.id.gridview);
-        gridLayoutManager = new GridLayoutManager(this, 3);
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            gridLayoutManager = new GridLayoutManager(this, 3);
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            gridLayoutManager = new GridLayoutManager(this, 4);
+
+        }
         gridview.setLayoutManager(gridLayoutManager);
         gridViewAdapter = new GridViewAdapter(informationArraylist);
         gridview.setAdapter(gridViewAdapter);

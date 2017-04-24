@@ -45,11 +45,11 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         init();
         initListener();
         ApiCall(currentPage);
-        gridviewscrolling();
+        gridViewScrolling();
 
     }
 
-    private void gridviewscrolling() {
+    private void gridViewScrolling() {
 
         gridview.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
             @Override
@@ -183,11 +183,11 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             gridLayoutManager = new GridLayoutManager(this, 4);
             gridview.setLayoutManager(gridLayoutManager);
-            gridviewscrolling();
+            gridViewScrolling();
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             gridLayoutManager = new GridLayoutManager(this, 3);
             gridview.setLayoutManager(gridLayoutManager);
-            gridviewscrolling();
+            gridViewScrolling();
 
         }
 

@@ -60,10 +60,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //   mHandler = new Handler();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-        // Navigation view header
         navHeader = navigationView.getHeaderView(0);
         txtName = (TextView) navHeader.findViewById(R.id.name);
         txtWebsite = (TextView) navHeader.findViewById(R.id.website);
@@ -72,22 +69,11 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         frame = (FrameLayout) findViewById(R.id.frame);
         firstfragment = (FrameLayout) findViewById(R.id.firstfragment);
         secondfragment = (FrameLayout) findViewById(R.id.secondfragment);
-
-
-     //   frame.setVisibility(View.GONE);
         fragmentTransition();
-
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
         loadNavHeader();
         setUpNavigationView();
 
-
-        //no need to change this code
-//        if (savedInstanceState == null) {
-//            navItemIndex = 0;
-//            CURRENT_TAG = TAG_HOME;
-//            loadHomeFragment();
-//        }
     }
 
     private void fragmentTransition() {
@@ -105,8 +91,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
     private void loadNavHeader() {
         txtName.setText("Ashraf Taukir");
         txtWebsite.setText("www.taukir.com");
-        //
-        // navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
+
     }
 
 
@@ -128,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
                 android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
         fragmentTransaction.commitAllowingStateLoss();
-        // mHandler.post(mPendingRunnable);
         drawer.closeDrawers();
         invalidateOptionsMenu();
     }
@@ -223,32 +207,33 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
 
     @Override
     public void onBackPressed() {
-
         super.onBackPressed();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        if (navItemIndex == 0) {
-            getMenuInflater().inflate(R.menu.main, menu);
-        }
-        if (navItemIndex == 3) {
-            getMenuInflater().inflate(R.menu.notifications, menu);
-        }
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+
+        Intent intent = new Intent(this, GridViewActivity.class);
+        this.startActivity(intent);
+        return super.onMenuOpened(featureId, menu);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
-        if (id == R.id.action_gridview) {
-
-            Intent intent = new Intent(this, GridViewActivity.class);
-            this.startActivity(intent);
-            return true;
-        }
+//        int id = item.getItemId();
+//        if (id == R.id.action_gridview) {
+//            Intent intent = new Intent(this, GridViewActivity.class);
+//            this.startActivity(intent);
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

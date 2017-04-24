@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import info.androidhive.navigationdrawer.R;
 import info.androidhive.navigationdrawer.myinterface.DataCallback;
@@ -41,7 +42,12 @@ public class TopFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         String value = editText.getText().toString();
-        databack.callback(value);
+        if(value.length()!=0){
+            databack.callback(value);
+        }else{
+
+            Toast.makeText(getActivity(), "Please set the value first", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

@@ -13,10 +13,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,7 +30,7 @@ import info.androidhive.navigationdrawer.fragment.SettingsFragment;
 import info.androidhive.navigationdrawer.fragment.TopFragment;
 import info.androidhive.navigationdrawer.myinterface.DataCallback;
 
-public class MainActivity extends AppCompatActivity implements DataCallback {
+public class MainActivity extends AppCompatActivity implements DataCallback, View.OnClickListener {
 
     private static final String TAG = "abc";
     private static final String TAG_HOME = "home";
@@ -53,12 +53,14 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
     private LinearLayout linearLayout;
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
+    private ImageView menuicon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navHeader = navigationView.getHeaderView(0);
@@ -69,11 +71,17 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         frame = (FrameLayout) findViewById(R.id.frame);
         firstfragment = (FrameLayout) findViewById(R.id.firstfragment);
         secondfragment = (FrameLayout) findViewById(R.id.secondfragment);
+        menuicon = (ImageView) findViewById(R.id.iv_menuicon);
+        initListeners();
         fragmentTransition();
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
         loadNavHeader();
         setUpNavigationView();
 
+    }
+
+    private void initListeners() {
+        menuicon.setOnClickListener(this);
     }
 
     private void fragmentTransition() {
@@ -93,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         txtWebsite.setText("www.taukir.com");
 
     }
-
 
     private void loadHomeFragment() {
 
@@ -210,33 +217,32 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         super.onBackPressed();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-
-        Intent intent = new Intent(this, GridViewActivity.class);
-        this.startActivity(intent);
-        return super.onMenuOpened(featureId, menu);
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-//        int id = item.getItemId();
-//        if (id == R.id.action_gridview) {
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onMenuOpened(int featureId, Menu menu) {
+//
+//        Intent intent = new Intent(this, GridViewActivity.class);
+//        startActivity(intent);
+//        return super.onMenuOpened(featureId, menu);
+//
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        int itemid=item.getItemId();
+//        if(itemid==R.id.action_gridview){
 //            Intent intent = new Intent(this, GridViewActivity.class);
 //            this.startActivity(intent);
 //            return true;
 //        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     @Override
@@ -263,5 +269,11 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
     @Override
     public void callback(String value) {
         bottomFragment.displayValue(value);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(this, GridViewActivity.class);
+        startActivity(intent);
     }
 }

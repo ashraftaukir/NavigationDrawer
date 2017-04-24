@@ -51,6 +51,7 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
 
     private void gridViewScrolling() {
 
+
         gridview.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
             @Override
             protected void loadMoreItems() {
@@ -84,7 +85,6 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
     }
 
     private void ApiCall(int pagenumber) {
-        Log.d(TAG, "ApiCall: " + "apicall");
         swipe_refresh_layout.setRefreshing(true);
         pageNumber = pagenumber;
 
@@ -105,6 +105,7 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         ArrayList<MyDataModel> informationArraylist = new ArrayList<>();
         swipe_refresh_layout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         gridview = (RecyclerView) findViewById(R.id.gridview);
+
         int orientation = this.getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             gridLayoutManager = new GridLayoutManager(this, 3);
@@ -192,4 +193,6 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         }
 
     }
+
+
 }

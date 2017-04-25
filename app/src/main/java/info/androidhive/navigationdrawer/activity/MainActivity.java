@@ -53,11 +53,13 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
     private String[] activityTitles;
     private LinearLayout linearLayout;
     private ImageView menuicon;
+    ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "onCreate: ");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         init();
@@ -198,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
         });
 
 
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -256,17 +258,15 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
         super.onConfigurationChanged(newConfig);
         int orientation = newConfig.orientation;
 
+      //  actionBarDrawerToggle.onConfigurationChanged(newConfig);
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Log.d(TAG, "onConfigurationChanged: ");
 
-            // linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-           // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+           // linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
         } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-           // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-//              linearLayout.setOrientation(LinearLayout.VERTICAL);
+            // linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         } else {
             Log.d("other", "onConfigurationChanged: " + "other");

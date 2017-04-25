@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -60,16 +61,31 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "onCreate: ");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         init();
         initListeners();
+        orientationCheck();
         fragmentTransition();
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
         loadNavHeader();
         setUpNavigationView();
 
+    }
+
+    private void orientationCheck() {
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            ViewGroup.LayoutParams firstparams = firstfragment.getLayoutParams();
+            firstparams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            firstparams.width = 0;
+            firstfragment.setLayoutParams(firstparams);
+            ViewGroup.LayoutParams secondparams = secondfragment.getLayoutParams();
+            secondparams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            secondparams.width = 0;
+            firstfragment.setLayoutParams(secondparams);
+            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        }
     }
 
     private void init() {

@@ -1,6 +1,7 @@
 package info.androidhive.navigationdrawer.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
     private Toolbar toolbar;
     private String[] activityTitles;
     private LinearLayout linearLayout;
-    private boolean shouldLoadHomeFragOnBackPress = true;
-    private Handler mHandler;
     private ImageView menuicon;
 
     @Override
@@ -60,11 +59,17 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
+        init();
+        initListeners();
+        fragmentTransition();
+        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
+        loadNavHeader();
+        setUpNavigationView();
 
-       // mHandler = new Handler();
+    }
 
+    private void init() {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navHeader = navigationView.getHeaderView(0);
         txtName = (TextView) navHeader.findViewById(R.id.name);
@@ -75,28 +80,11 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
         firstfragment = (FrameLayout) findViewById(R.id.firstfragment);
         secondfragment = (FrameLayout) findViewById(R.id.secondfragment);
         menuicon = (ImageView) findViewById(R.id.iv_menuicon);
-        initListeners();
-        fragmentTransition();
-        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
-        loadNavHeader();
-        setUpNavigationView();
-
     }
 
     private void initListeners() {
         menuicon.setOnClickListener(this);
 
-        //activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
-        //loadNavHeader();
-        //setUpNavigationView();
-
-
-        //no need for this code
-//        if (savedInstanceState == null) {
-//            navItemIndex = 0;
-//            CURRENT_TAG = TAG_HOME;
-//            loadHomeFragment();
-//        }
     }
 
     private void fragmentTransition() {
@@ -138,39 +126,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
         drawer.closeDrawers();
         invalidateOptionsMenu();
     }
-//    private void loadHomeFragment() {
-//
-//        selectNavMenu();
-//
-//        setToolbarTitle();
-//
-//        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
-//            drawer.closeDrawers();
-//
-//
-//            return;
-//        }
-//
-//
-//        Runnable mPendingRunnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                Fragment fragment = getHomeFragment();
-//                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-//                        android.R.anim.fade_out);
-//                fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
-//                fragmentTransaction.commitAllowingStateLoss();
-//            }
-//        };
-//
-//
-//        mHandler.post(mPendingRunnable);
-//
-//        drawer.closeDrawers();
-//
-//        invalidateOptionsMenu();
-//    }
+
 
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
@@ -237,9 +193,6 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
                 }
                 menuItem.setChecked(true);
                 loadHomeFragment();
-
-                //loadHomeFragment();
-
                 return true;
             }
         });
@@ -267,6 +220,9 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
         super.onBackPressed();
     }
 
+
+
+    //this code should be reuse
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.menu, menu);
@@ -304,10 +260,13 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
             Log.d(TAG, "onConfigurationChanged: ");
 
             // linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+           // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-            //  linearLayout.setOrientation(LinearLayout.VERTICAL);
+           // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+//              linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         } else {
             Log.d("other", "onConfigurationChanged: " + "other");

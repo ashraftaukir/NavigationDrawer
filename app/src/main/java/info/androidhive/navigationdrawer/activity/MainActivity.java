@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
         });
 
 
-         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -221,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
     public void onBackPressed() {
         super.onBackPressed();
     }
-
 
 
     //this code should be reuse
@@ -257,22 +257,42 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         int orientation = newConfig.orientation;
-
-      //  actionBarDrawerToggle.onConfigurationChanged(newConfig);
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Log.d(TAG, "onConfigurationChanged: ");
-
-           // linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+            setViewforLandscapemode();
 
         } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-            // linearLayout.setOrientation(LinearLayout.VERTICAL);
+            setViewforPotraitmode();
 
         } else {
             Log.d("other", "onConfigurationChanged: " + "other");
 
         }
 
+    }
+
+    private void setViewforPotraitmode() {
+
+        ViewGroup.LayoutParams firstparams = firstfragment.getLayoutParams();
+        firstparams.height = 0;
+        firstparams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        firstfragment.setLayoutParams(firstparams);
+        ViewGroup.LayoutParams secondparams = secondfragment.getLayoutParams();
+        secondparams.height = 0;
+        secondparams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        firstfragment.setLayoutParams(secondparams);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+    }
+
+    private void setViewforLandscapemode() {
+        ViewGroup.LayoutParams firstparams = firstfragment.getLayoutParams();
+        firstparams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        firstparams.width = 0;
+        firstfragment.setLayoutParams(firstparams);
+        ViewGroup.LayoutParams secondparams = secondfragment.getLayoutParams();
+        secondparams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        secondparams.width = 0;
+        firstfragment.setLayoutParams(secondparams);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
     }
 
     @Override

@@ -4,28 +4,21 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import info.androidhive.navigationdrawer.R;
 import info.androidhive.navigationdrawer.fragment.BottomFragment;
@@ -36,53 +29,62 @@ import info.androidhive.navigationdrawer.fragment.PhotosFragment;
 import info.androidhive.navigationdrawer.fragment.SettingsFragment;
 import info.androidhive.navigationdrawer.fragment.TopFragment;
 import info.androidhive.navigationdrawer.myinterface.DataCallback;
-import info.androidhive.navigationdrawer.other.CircleTransform;
 
-public class MainActivity extends AppCompatActivity implements DataCallback {
+public class MainActivity extends AppCompatActivity implements DataCallback, View.OnClickListener {
 
-    private NavigationView navigationView;
-    private DrawerLayout drawer;
-    private View navHeader;
-    private TextView txtName, txtWebsite;
-    private Toolbar toolbar;
-
-
-    public static int navItemIndex = 0;
-
+    private static final String TAG = "abc";
     private static final String TAG_HOME = "home";
     private static final String TAG_PHOTOS = "photos";
     private static final String TAG_MOVIES = "movies";
     private static final String TAG_NOTIFICATIONS = "notifications";
     private static final String TAG_SETTINGS = "settings";
+    public static int navItemIndex = 0;
     public static String CURRENT_TAG = TAG_HOME;
+    TopFragment topFragment;
+    BottomFragment bottomFragment;
+    FragmentTransaction transaction;
+    FrameLayout frame, firstfragment, secondfragment;
+    private NavigationView navigationView;
+    private DrawerLayout drawer;
+    private View navHeader;
+    private TextView txtName, txtWebsite;
+    private Toolbar toolbar;
     private String[] activityTitles;
     private LinearLayout linearLayout;
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
-
-
-    TopFragment topFragment;
-    BottomFragment bottomFragment;
-    FragmentTransaction transaction;
+    private ImageView menuicon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
        // mHandler = new Handler();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-        // Navigation view header
         navHeader = navigationView.getHeaderView(0);
         txtName = (TextView) navHeader.findViewById(R.id.name);
         txtWebsite = (TextView) navHeader.findViewById(R.id.website);
         linearLayout = (LinearLayout) findViewById(R.id.linearlayout);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        frame = (FrameLayout) findViewById(R.id.frame);
+        firstfragment = (FrameLayout) findViewById(R.id.firstfragment);
+        secondfragment = (FrameLayout) findViewById(R.id.secondfragment);
+        menuicon = (ImageView) findViewById(R.id.iv_menuicon);
+        initListeners();
         fragmentTransition();
+        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
+        loadNavHeader();
+        setUpNavigationView();
+
+    }
+
+    private void initListeners() {
+        menuicon.setOnClickListener(this);
 
         //activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
         //loadNavHeader();
@@ -112,10 +114,30 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
     private void loadNavHeader() {
         txtName.setText("Ashraf Taukir");
         txtWebsite.setText("www.taukir.com");
-        navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
+
     }
 
+    private void loadHomeFragment() {
 
+        selectNavMenu();
+        setToolbarTitle();
+        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
+            drawer.closeDrawers();
+            return;
+        }
+        firstfragment.setVisibility(View.GONE);
+        secondfragment.setVisibility(View.GONE);
+        frame.setVisibility(View.VISIBLE);
+
+        Fragment fragment = getHomeFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
+        fragmentTransaction.commitAllowingStateLoss();
+        drawer.closeDrawers();
+        invalidateOptionsMenu();
+    }
 //    private void loadHomeFragment() {
 //
 //        selectNavMenu();
@@ -214,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
                     menuItem.setChecked(true);
                 }
                 menuItem.setChecked(true);
+                loadHomeFragment();
 
                 //loadHomeFragment();
 
@@ -241,49 +264,50 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
 
     @Override
     public void onBackPressed() {
-
         super.onBackPressed();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        if (navItemIndex == 0) {
-            getMenuInflater().inflate(R.menu.main, menu);
-        }
-        if (navItemIndex == 3) {
-            getMenuInflater().inflate(R.menu.notifications, menu);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-        if (id == R.id.action_gridview) {
-
-            Intent intent = new Intent(this, GridViewActivity.class);
-            this.startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onMenuOpened(int featureId, Menu menu) {
+//
+//        Intent intent = new Intent(this, GridViewActivity.class);
+//        startActivity(intent);
+//        return super.onMenuOpened(featureId, menu);
+//
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        int itemid=item.getItemId();
+//        if(itemid==R.id.action_gridview){
+//            Intent intent = new Intent(this, GridViewActivity.class);
+//            this.startActivity(intent);
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         int orientation = newConfig.orientation;
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
-            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.d(TAG, "onConfigurationChanged: ");
+
+            // linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
         } else if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            //  linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         } else {
             Log.d("other", "onConfigurationChanged: " + "other");
@@ -295,5 +319,11 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
     @Override
     public void callback(String value) {
         bottomFragment.displayValue(value);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(this, GridViewActivity.class);
+        startActivity(intent);
     }
 }

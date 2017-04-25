@@ -45,11 +45,12 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         init();
         initListener();
         ApiCall(currentPage);
-        gridviewscrolling();
+        gridViewScrolling();
 
     }
 
-    private void gridviewscrolling() {
+    private void gridViewScrolling() {
+
 
         gridview.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
             @Override
@@ -84,7 +85,6 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
     }
 
     private void ApiCall(int pagenumber) {
-        Log.d(TAG, "ApiCall: " + "apicall");
         swipe_refresh_layout.setRefreshing(true);
         pageNumber = pagenumber;
 
@@ -105,7 +105,14 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         ArrayList<MyDataModel> informationArraylist = new ArrayList<>();
         swipe_refresh_layout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         gridview = (RecyclerView) findViewById(R.id.gridview);
-        gridLayoutManager = new GridLayoutManager(this, 3);
+
+        int orientation = this.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            gridLayoutManager = new GridLayoutManager(this, 3);
+        } else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            gridLayoutManager = new GridLayoutManager(this, 4);
+
+        }
         gridview.setLayoutManager(gridLayoutManager);
         gridViewAdapter = new GridViewAdapter(informationArraylist);
         gridview.setAdapter(gridViewAdapter);
@@ -177,13 +184,22 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             gridLayoutManager = new GridLayoutManager(this, 4);
             gridview.setLayoutManager(gridLayoutManager);
-            gridviewscrolling();
+            gridViewScrolling();
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             gridLayoutManager = new GridLayoutManager(this, 3);
             gridview.setLayoutManager(gridLayoutManager);
-            gridviewscrolling();
+            gridViewScrolling();
 
         }
 
     }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d(TAG, "onBackPressed: ");
+//        finish();
+    }
+
 }

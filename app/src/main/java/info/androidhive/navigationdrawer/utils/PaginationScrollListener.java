@@ -8,12 +8,10 @@ import android.util.Log;
 
 public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
 
-    GridLayoutManager layoutManager;
+    private GridLayoutManager layoutManager;
 
 
-    public PaginationScrollListener(GridLayoutManager layoutManager) {
-        Log.d("layout", "loadMoreItems: "+"layout");
-
+    protected PaginationScrollListener(GridLayoutManager layoutManager) {
         this.layoutManager = layoutManager;
     }
 

@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mHandler = new Handler();
+       // mHandler = new Handler();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
@@ -84,9 +84,12 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         fragmentTransition();
 
-        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
-        loadNavHeader();
-        setUpNavigationView();
+        //activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
+        //loadNavHeader();
+        //setUpNavigationView();
+
+
+        //no need for this code
 //        if (savedInstanceState == null) {
 //            navItemIndex = 0;
 //            CURRENT_TAG = TAG_HOME;
@@ -113,39 +116,39 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
     }
 
 
-    private void loadHomeFragment() {
-
-        selectNavMenu();
-
-        setToolbarTitle();
-
-        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
-            drawer.closeDrawers();
-
-
-            return;
-        }
-
-
-        Runnable mPendingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                Fragment fragment = getHomeFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-                        android.R.anim.fade_out);
-                fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
-                fragmentTransaction.commitAllowingStateLoss();
-            }
-        };
-
-
-        mHandler.post(mPendingRunnable);
-
-        drawer.closeDrawers();
-
-        invalidateOptionsMenu();
-    }
+//    private void loadHomeFragment() {
+//
+//        selectNavMenu();
+//
+//        setToolbarTitle();
+//
+//        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
+//            drawer.closeDrawers();
+//
+//
+//            return;
+//        }
+//
+//
+//        Runnable mPendingRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                Fragment fragment = getHomeFragment();
+//                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+//                        android.R.anim.fade_out);
+//                fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
+//                fragmentTransaction.commitAllowingStateLoss();
+//            }
+//        };
+//
+//
+//        mHandler.post(mPendingRunnable);
+//
+//        drawer.closeDrawers();
+//
+//        invalidateOptionsMenu();
+//    }
 
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
@@ -212,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback {
                 }
                 menuItem.setChecked(true);
 
-                loadHomeFragment();
+                //loadHomeFragment();
 
                 return true;
             }

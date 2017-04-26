@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
             }
         };
 
-        drawer.setDrawerListener(actionBarDrawerToggle);
+        drawer.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
     }
 

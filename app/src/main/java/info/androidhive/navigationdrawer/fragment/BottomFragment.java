@@ -23,7 +23,6 @@ public class BottomFragment extends Fragment {
         return view;
     }
 
-
     public void displayValue(String value) {
         display_text.setText(value);
     }

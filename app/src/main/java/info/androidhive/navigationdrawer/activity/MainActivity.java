@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
         orientationCheck();
         fragmentTransition();
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
-        loadNavHeader();
+        setNavHeader();
         setUpNavigationView();
 
     }
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
     }
 
 
-    private void loadNavHeader() {
+    private void setNavHeader() {
         txtName.setText("Ashraf Taukir");
         txtWebsite.setText("www.taukir.com");
 

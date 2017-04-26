@@ -199,7 +199,6 @@ public class GridViewActivity extends AppCompatActivity implements GetDataCallBa
     public void onBackPressed() {
         super.onBackPressed();
         Log.d(TAG, "onBackPressed: ");
-//        finish();
     }
 
 }

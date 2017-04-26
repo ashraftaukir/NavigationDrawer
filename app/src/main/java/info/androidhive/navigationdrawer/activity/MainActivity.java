@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
 
 
     private void setNavHeader() {
-        txtName.setText("Ashraf Taukir");
-        txtWebsite.setText("www.taukir.com");
+        txtName.setText(getResources().getString(R.string.username));
+        txtWebsite.setText(getResources().getString(R.string.websitename));
 
     }
 

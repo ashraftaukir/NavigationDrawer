@@ -32,4 +32,6 @@
     <string name="action_gridview">GridView</string>
     <string name="showdata">Show data here</string>
     <string name="save">Save</string>
+    <string name="username">Ashraf Taukir</string>
+    <string name="websitename">www.taukir.com</string>
 </resources>

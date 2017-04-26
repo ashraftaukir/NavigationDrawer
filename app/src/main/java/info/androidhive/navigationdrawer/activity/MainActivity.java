@@ -1,10 +1,8 @@
 package info.androidhive.navigationdrawer.activity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -49,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
     FrameLayout frame, firstfragment, secondfragment;
     private NavigationView navigationView;
     private DrawerLayout drawer;
-    private View navHeader;
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
     private String[] activityTitles;
@@ -90,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements DataCallback, Vie
 
     private void init() {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navHeader = navigationView.getHeaderView(0);
+        View navHeader = navigationView.getHeaderView(0);
         txtName = (TextView) navHeader.findViewById(R.id.name);
         txtWebsite = (TextView) navHeader.findViewById(R.id.website);
         linearLayout = (LinearLayout) findViewById(R.id.linearlayout);

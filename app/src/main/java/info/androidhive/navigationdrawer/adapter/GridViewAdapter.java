@@ -19,10 +19,8 @@ import info.androidhive.navigationdrawer.model.MyDataModel;
 public class GridViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String BASE_URL_IMG = "https://image.tmdb.org/t/p/w150";
-
-    private ArrayList<MyDataModel> informationArraylist;
-
     public Context context;
+    private ArrayList<MyDataModel> informationArraylist;
 
     public GridViewAdapter(ArrayList<MyDataModel> informationArraylist) {
 
@@ -33,7 +31,7 @@ public class GridViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-         context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         RecyclerView.ViewHolder vh;
         View productView = inflater.inflate(R.layout.griditem, parent, false);
